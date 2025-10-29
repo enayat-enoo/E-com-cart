@@ -1,6 +1,6 @@
 const CartItem = require("../models/CartItem.js");
 
-export const getCart = async (req, res) => {
+const getCart = async (req, res) => {
   try {
     const cart = await CartItem.find().populate("product");
     const total = cart.reduce(
@@ -14,7 +14,7 @@ export const getCart = async (req, res) => {
   }
 };
 
-export const addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
   const { productId, qty } = req.body;
   try {
     const existing = await CartItem.findOne({ product: productId });
@@ -31,7 +31,7 @@ export const addToCart = async (req, res) => {
   }
 };
 
-export const removeFromCart = async (req, res) => {
+const removeFromCart = async (req, res) => {
   const { id } = req.params;
   try {
     await CartItem.findByIdAndDelete(id);
@@ -41,3 +41,5 @@ export const removeFromCart = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+module.exports = { getCart, addToCart, removeFromCart };

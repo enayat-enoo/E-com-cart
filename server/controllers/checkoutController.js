@@ -1,7 +1,7 @@
 const CartItem = require("../models/CartItem.js");
 const Order = require("../models/Order.js");
 
-export const checkout = async (req, res) => {
+ const checkout = async (req, res) => {
   const { name, email } = req.body;
   try {
     const cart = await CartItem.find().populate("product");
@@ -29,3 +29,5 @@ export const checkout = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+module.exports =  checkout;
