@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const cartItemSchema = new mongoose.Schema({
+  userId: {     //Mock User
+    type: String,
+    required: true,
+  },
   product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
   quantity: { type: Number, required: true, default: 1 },
 });

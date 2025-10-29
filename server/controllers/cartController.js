@@ -1,8 +1,10 @@
 const CartItem = require("../models/CartItem.js");
 
 const getCart = async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) return res.status(400).json({ error: "Missing userId" });
   try {
-    const cart = await CartItem.find().populate("product");
+    const cart = await CartItem.find({ userId }).populate("product");
     const total = cart.reduce(
       (sum, item) => sum + item.product.price * item.quantity,
       0
@@ -15,15 +17,21 @@ const getCart = async (req, res) => {
 };
 
 const addToCart = async (req, res) => {
-  const { productId, qty } = req.body;
+  const { userId, productId, qty } = req.body;
+
+  if (!userId || !productId || !qty) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   try {
-    const existing = await CartItem.findOne({ product: productId });
+    const existing = await CartItem.findOne({ product: productId, userId });
     if (existing) {
       existing.quantity += qty;
       await existing.save();
     } else {
-      await CartItem.create({ product: productId, quantity: qty });
+      await CartItem.create({ userId, product: productId, quantity: qty });
     }
+
     res.status(201).json({ message: "Item added to cart" });
   } catch (error) {
     console.error(error);
