@@ -15,14 +15,14 @@ function CartItem({ item, removeItem, updateQty }) {
 
       <div className="flex items-center gap-3">
         <button
-          onClick={() => updateQty(item.productId, item.qty - 1)}
+          onClick={() => updateQty(item._id, item.quantity - 1)}
           className="px-2 py-1 bg-gray-200 rounded-md"
         >
           -
         </button>
-        <span className="text-lg font-medium">{item.qty}</span>
+        <span className="text-lg font-medium">{item.quantity}</span>
         <button
-          onClick={() => updateQty(item.productId, item.qty + 1)}
+          onClick={() => updateQty(item._id, item.quantity + 1)}
           className="px-2 py-1 bg-gray-200 rounded-md"
         >
           +
